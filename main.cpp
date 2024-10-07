@@ -4,8 +4,9 @@
 #include <iostream>
 using namespace std;
 
-#include "game.h"
-
+#include "data/entity.h"
+#include "data/player.h"
+#include "data/enemy.h"
 /*
  * Method declarations before main
  */
@@ -24,7 +25,7 @@ int main()
      *  an endless amount of encounters until the player selects the input for exit.
      *
      */
-    cout << "Hello! Welcome to my randomly generated text-based RPG."<<endl;
+    cout << "Hello! Welcome to my randomly generated text-based RPG."<<endl<<endl;
 
     //boolean value representing whether or not the game is being played (running)
     bool playing = true;
@@ -61,28 +62,33 @@ void displayOptions() {
     //Simple print statements for player input
     cout << "Enter (i) for information about the game."<<endl;
     cout << "Enter (p) to play the game."<<endl;
-    cout << "Enter (e) to exit." <<endl;
+    cout << "Enter (e) to exit." <<endl<<endl;
 }
 void displayInformation() {
     //Basic information for input in encounter loop
     cout << "This is a turn based text rpg with random encounters."<<endl;
-    cout << "Each encounter, you can choose to (a)ttack (r)un or (e)xit to menu." <<endl;
+    cout << "Each encounter, you can choose to (a)ttack, (r)un, (s)ave or (e)xit to menu." <<endl;
+    cout << "NEW: (s)ave will keep your character saved!" <<endl;
+    cout << "NEW: try (d)efending in combat! Enemies can too." <<endl;
     cout << "Press enter to continue: ";
     cin.get();
 }
 
 int gameLoop() {
 
+    //Create new player object
+    player player;
+    entity &playerCharacter = player.getPlayerEntity();
     //Flavor text
-    cout << "You are a nameless knight wandering the Emerald Plains." <<endl;
+    cout << "You are " + playerCharacter.getName() +", "+ playerCharacter.getDescription() <<endl<<endl;
+    cout <<"You are wandering the emerald plains" <<endl;
     //boolean for while loop that represents if the game is played. modified in conditional statements
     bool playing = true;
     while(playing) {
         //More flavor text
-        cout << "As you venture on your quest, you see someone approaching!" <<endl;
-
+        cout << "As you venture on your quest, you see someone approaching!" <<endl<<endl;
         //Calls the entity() constructor, evokes generateEntity() method. see game.cpp for detailed description
-        entity creature;
+        enemy creature;
         bool inEncounter = true;
         /*
          * Nested while loop. This might seem a little unintuitive at first,
@@ -95,7 +101,7 @@ int gameLoop() {
             //Flavor text and options. The four options will be compared in the following conditionals for char choice;
             cout<< "In front of you is a " <<creature.getName() <<endl;
             cout << "What will you do?" << endl;
-            cout << "(a)ttack, (v)iew enemy, (r)un, or (e)xit"<<endl;
+            cout << "(a)ttack, (d)efend, (v)iew enemy, (r)un, (s)ave or (e)xit"<<endl;
 
             //Sets char choice to a validated user input from getInput();
             char choice = getInput();
@@ -109,22 +115,35 @@ int gameLoop() {
                  * int attack sets a random number in the ranger of 1-100
                  */
                 srand(time(0));
-                int attack = rand()%100;
-                cout << "Attacked for " <<attack << " damage!"<<endl;
+
+                cout << "Attacked for ";
                 //Uses attackEntity method to subtract health from entity
-                creature.attackEntity(attack);
+                playerCharacter.attackAgainst(creature,rand() % (playerCharacter.getExperience()/3));
+
                 //Checks to see if the creature has been slain. If so, end encounter
                 if(creature.getHealth() <=0) {
                     cout << creature.getName() << " has been slain! There is less evil in the world." <<endl;
+                    //Gaining experience from slain creature
+                    cout << "You gained experience! " << creature.getExperience() << " points"<<endl;
+                    playerCharacter.addExperience(creature.getExperience());
+
+                    //End encounter
                     inEncounter = false;
                     cout <<endl;
                     cout<<"You continue on your quest"<<endl<<endl;
+                }
+                else {
+                    //Now the creature fights back!
+                    creature.move_against(playerCharacter);
                 }
             }
             //Checks the stats/information for an entity
             else if (choice == 'v') {
                 //Using overloaded << operator for easy printing to stream
-                cout << creature;
+                cout << endl<< "Enemy: " <<endl;
+                cout << creature<<endl;
+                cout << "Player Health: ";
+                cout << playerCharacter.getHealth()<<endl;;
             }
             else if (choice == 'r') {
                 //Run option, encounter immediately ends.
@@ -132,12 +151,30 @@ int gameLoop() {
                 cout<<"You continue on your quest"<<endl<<endl;
                 inEncounter = false;
             }
+            else if (choice == 's') {
+                //Saving option, invokes player.save();
+                cout << "Saving..."<<endl;
+                player.save();
+            }
+            else if (choice == 'd') {
+                //Defense option, invokes entity.defendAgainst()
+                cout << "Defending!"<<endl;
+                playerCharacter.defendAgainst(creature);
+                //Creature fights back after defense
+                creature.move_against(playerCharacter);
+            }
             else if (choice == 'e') {
                 //Switches off booleans for playing and encounter and returns 0 so that gameLoop() terminates
                 inEncounter = false;
                 playing = false;
                 return 0;
 
+            }
+            //Checking to see at the end of the encounter if the player character has died
+            if(playerCharacter.getHealth()<1) {
+                cout << playerCharacter.getName() + " has perished!" <<endl;
+                cout << "Try again next time..."<<endl;
+                return 0;
             }
         }
 
