@@ -1,0 +1,40 @@
+<!-- 
+    Beau Albritton
+    CS2300
+    index.html
+
+    Basic homepage for Spotify Album Search
+
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify Artist Search</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+</head>
+
+<nav class="navbar">
+    <div class="navbar-brand">discog.</div>
+    <ul class="navbar-links">
+
+        <li><a href="/">Search</a></li>
+    </ul>
+</nav>
+
+<body>
+    <section class="index-container">
+
+        <h1>discog.</h1>
+        <h2>spotify album search</h2>
+        <!--Form that gets an artist name from the user that will later display their albums. This is passed back to flask for later rending in results.html-->
+        <form action="/search" method="POST">
+            <label for="artist">Search an Artist:</label>
+            <input type="text" id="artist" name="artist" required>
+            <button type="submit">Search</button>
+        </form>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!-- 
+    Beau Albritton
+    CS2300
+    results.html
+
+    Rendered dynamically with Flask.
+
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Albums</title>
+    <!-- Getting css sheet and button script-->
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="../static/nextalbum.js"></script>
+</head>
+
+
+<nav class="navbar">
+    <section class="navbar-brand">discog.</section>
+    <ul class="navbar-links">
+        <li><a href="/">Search</a></li>
+    </ul>
+</nav>
+
+<body>
+    <!-- Anything in {} will be read by flask when the template is rendered.
+        Think of this as python inserted code in html 
+    -->
+    {% if error %}
+
+    <p>{{ error }}</p>
+    {% else %}
+    <h2>{{ artist.name }}'s Discography </h2>
+    <section class="album-container">
+        {% for album in albums %}
+        <!-- Setting album to active for later CSS hiding. One album at a time -->
+        <section class="album {% if loop.index == 1 %}active{% endif %}">
+            <!-- Album Info Section -->
+            <section class="album-info">
+                <h3>{{ album.name }}</h3>
+                <img src="{{ album.images[0].url }}" alt="{{ album.name }}" width="100">
+                <p><strong>Release Date:</strong> {{ album.release_date }}</p>
+            </section>
+            <!-- Track Section -->
+            <section class="tracks">
+                <h4>Tracks:</h4>
+                <ol>
+                    <!--Getting track lists, finding individual tracks and their .name attribute -->
+                    {%for track in album.track_list%}
+                    <li>{{ track.name }}</li>
+                    <!-- Endfor is peculiar syntax, but tells Flask to end the for loop -->
+                    {% endfor %}
+                </ol>
+            </section>
+
+            <section class="review-section">
+                <h4>Reviews</h4>
+                <!-- If it has reviews display the reviews. Else display "no reviews" -->
+                {% if album.reviews %}
+                <section class="reviews-container">
+                    {% for review in album.reviews %}
+                    <!-- Formatting review with subclasses for later css manipulation -->
+                    <section class="review">
+                        <span class="review-user">{{ review.user }}</span>
+                        <span class="review-score">{{ review.score }}/5.0</span>
+                        <p class="review-text">"{{ review.text }}"</p>
+                    </section>
+                    {% endfor %}
+                </section>
+                {% else %}
+                <p>No reviews yet</p>
+                {% endif %}
+
+                <!-- Review submission form -->
+                <section class="review-form">
+                    <h4>Add Review</h4>
+                    <!-- Using flasks url_for() as action and posting the form. -->
+                    <form action="{{ url_for('submit_review') }}" method="POST">
+                        <!-- Hidden fields that are abstracted from user.
+                             A little advanced CSS trickery but this allows advanced form submission.    
+                        -->
+                        <input type="hidden" name="album_id" value="{{ album.id }}">
+                        <input type="hidden" name="album_name" value="{{ album.name }}">
+
+                        <!-- Now getting publicly displayed information
+                            username, score and review text. 
+                        -->
+                        <section class="form-group">
+                            <input type="text" name="username" placeholder="Your name" required>
+                        </section>
+                        <section class="form-group">
+                            <select name="score" required>
+                                <option value="">Select score</option>
+                                {% for score in range(10, -1, -1) %}
+                                <option value="{{ score/2 }}">{{ score/2 }}</option>
+                                {% endfor %}
+                                </select>
+                        </section>
+                        <section class="form-group">
+                            <textarea name="review_text" placeholder="Write your review..." required></textarea>
+                        </section>
+                        <!-- Submit once button is pressed -->
+                        <button type="submit">Submit Review</button>
+                    </form>
+                </section>
+            </section>
+        </section>
+        {% endfor %}
+    </section>
+    <!-- Next button see static/nextalbum.js -->
+    <button class="next">Next Album</button>
+    <a href="/">Back to search</a> {% endif %}

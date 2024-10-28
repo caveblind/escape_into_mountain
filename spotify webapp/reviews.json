@@ -1,0 +1,98 @@
+{
+    "reviews": {
+        "test case": [
+            {
+                "user": "user",
+                "score": -1,
+                "text": "Great Album!",
+                "date": "2024-10-25 00:00:00",
+                "album_name": "Album Name"
+            }
+        ],
+        "3L2iweH45rVdTBPldbY6dp": [
+            {
+                "user": "bingle",
+                "score": 0.0,
+                "text": "Sucks",
+                "date": "2024-10-27 17:46:17",
+                "album_name": "eternal sunshine (slightly deluxe and also live)"
+            },
+            {
+                "user": "binglecorp",
+                "score": 5.0,
+                "text": "amazing\r\n",
+                "date": "2024-10-27 20:40:10",
+                "album_name": "eternal sunshine (slightly deluxe and also live)"
+            },
+            {
+                "user": "binglecorp",
+                "score": 5.0,
+                "text": "amazing\r\n",
+                "date": "2024-10-27 20:41:17",
+                "album_name": "eternal sunshine (slightly deluxe and also live)"
+            },
+            {
+                "user": "bingle",
+                "score": 0.0,
+                "text": "a",
+                "date": "2024-10-27 20:44:28",
+                "album_name": "eternal sunshine (slightly deluxe and also live)"
+            },
+            {
+                "user": "bingle",
+                "score": 0.0,
+                "text": "a",
+                "date": "2024-10-27 20:44:38",
+                "album_name": "eternal sunshine (slightly deluxe and also live)"
+            },
+            {
+                "user": "a",
+                "score": 1.5,
+                "text": "a",
+                "date": "2024-10-27 20:47:58",
+                "album_name": "eternal sunshine (slightly deluxe and also live)"
+            }
+        ],
+        "2oVtB1xKrul4yhgQGdT4I0": [
+            {
+                "user": "cool guy",
+                "score": 4.0,
+                "text": "cool",
+                "date": "2024-10-27 17:48:46",
+                "album_name": "Key to the Kuffs (Redux)"
+            },
+            {
+                "user": "g",
+                "score": 5.0,
+                "text": "cool",
+                "date": "2024-10-27 18:53:49",
+                "album_name": "Key to the Kuffs (Redux)"
+            },
+            {
+                "user": "binglecorp",
+                "score": 5.0,
+                "text": "a",
+                "date": "2024-10-27 20:52:25",
+                "album_name": "Key to the Kuffs (Redux)"
+            }
+        ],
+        "5Csjy4XeA7KnizkhIvI7y2": [
+            {
+                "user": "binglecorp",
+                "score": 0.5,
+                "text": "Booooo",
+                "date": "2024-10-27 20:27:45",
+                "album_name": "eternal sunshine (slightly deluxe)"
+            }
+        ],
+        "4odeNH2Qe9DAxT3sC1qq9p": [
+            {
+                "user": "discog",
+                "score": 2.0,
+                "text": "not the best",
+                "date": "2024-10-27 23:47:02",
+                "album_name": "Super What?"
+            }
+        ]
+    }
+}
